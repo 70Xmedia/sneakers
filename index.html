@@ -122,35 +122,34 @@
 /* ---------- Reviews ---------- */
 .reviews{padding:12px 0 8px; border-top:1px solid var(--line);}
 .reviews-head{padding-top:24px;}
-.reviews-head h2{font-size:1.2rem; margin:0 0 4px;}
-.reviews-head p{color:var(--muted); font-size:.82rem; margin:0 0 16px;}
+.reviews-head h2{font-size:1.3rem; margin:0 0 4px;}
+.reviews-head p{color:var(--muted); font-size:.85rem; margin:0 0 18px;}
 .reviews-row{
-  display:flex; gap:12px; overflow-x:auto; padding:4px 2px 18px; scroll-snap-type:x proximity;
+  display:flex; gap:16px; overflow-x:auto; padding:4px 4px 20px; scroll-snap-type:x proximity;
   scrollbar-width:none;
 }
 .reviews-row::-webkit-scrollbar{display:none;}
 .review-card{
-  flex:0 0 auto; width:220px; scroll-snap-align:start;
+  flex:0 0 auto; width:280px; scroll-snap-align:start;
   background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
   overflow:hidden; display:flex; flex-direction:column;
 }
-.review-photo{width:100%; aspect-ratio:4/3; object-fit:cover; background:var(--surface-2); display:block;}
-.review-tagrow{display:flex; align-items:center; justify-content:space-between; padding:10px 14px 0;}
+.review-photo{width:100%; aspect-ratio:1/1; object-fit:cover; background:var(--surface-2); display:block;}
+.review-tagrow{display:flex; align-items:center; justify-content:space-between; padding:14px 16px 0;}
 .review-tag{
-  font-size:.62rem; color:var(--accent); background:rgba(244,208,0,.1);
-  display:inline-block; padding:2px 8px; border-radius:6px; font-weight:700;
+  font-size:.68rem; color:var(--accent); background:rgba(244,208,0,.1);
+  display:inline-block; padding:4px 10px; border-radius:6px; font-weight:700;
 }
-.review-stars{color:var(--accent); font-size:.72rem; letter-spacing:1px;}
-.review-quote{font-size:.8rem; line-height:1.45; color:var(--text); margin:8px 0 0; padding:0 14px;}
-.review-who{display:flex; align-items:center; gap:8px; padding:12px 14px 14px;}
+.review-stars{color:var(--accent); font-size:.85rem; letter-spacing:1px;}
+.review-quote{font-size:.9rem; line-height:1.55; color:var(--text); margin:10px 0 0; padding:0 16px;}
+.review-who{display:flex; align-items:center; gap:10px; padding:14px 16px 16px;}
 .review-avatar-letter{
-  width:30px; height:30px; border-radius:50%; background:var(--surface-2); border:1px solid var(--line);
+  width:36px; height:36px; border-radius:50%; background:var(--surface-2); border:1px solid var(--line);
   display:flex; align-items:center; justify-content:center; font-weight:800; color:var(--accent);
-  font-size:.8rem; flex:0 0 auto;
+  font-size:.9rem; flex:0 0 auto;
 }
-.review-who .rname{font-size:.8rem; font-weight:700; color:var(--text);}
-.review-who .rloc{font-size:.66rem; color:var(--muted);}
-
+.review-who .rname{font-size:.85rem; font-weight:700; color:var(--text);}
+.review-who .rloc{font-size:.7rem; color:var(--muted);}
 
 
 
@@ -190,7 +189,20 @@
     position:absolute; top:10px; right:10px; z-index:5; width:32px; height:32px; border-radius:50%;
     background:rgba(0,0,0,.55); color:#fff; border:none; font-size:1.1rem; line-height:1;
   }
-  .sheet img.main{width:100%; aspect-ratio:1/1; object-fit:cover; background:#0B0B0D;}
+.gallery{position:relative; aspect-ratio:1/1; background:#0B0B0D; overflow:hidden; touch-action:pan-y;}
+.gallery-track{display:flex; height:100%; transition:transform .28s cubic-bezier(.22,.8,.32,1);}
+.gallery-track img{width:100%; height:100%; object-fit:cover; flex:0 0 100%; background:#0B0B0D;}
+.gallery-arrow{
+  position:absolute; top:50%; transform:translateY(-50%); width:34px; height:34px; border-radius:50%;
+  background:rgba(0,0,0,.55); border:none; color:#fff; font-size:1rem;
+  display:flex; align-items:center; justify-content:center; z-index:5;
+}
+.gallery-arrow.prev{left:10px;} .gallery-arrow.next{right:10px;}
+.gallery-arrow[disabled]{opacity:0; pointer-events:none;}
+.gallery-dots{position:absolute; bottom:10px; left:0; right:0; display:flex; justify-content:center; gap:6px; z-index:5;}
+.gallery-dots span{width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,.5);}
+.gallery-dots span.on{background:var(--accent); width:16px; border-radius:4px;}
+.gallery-count{position:absolute; top:12px; left:12px; background:rgba(0,0,0,.55); color:#fff; font-size:.68rem; font-weight:700; padding:3px 8px; border-radius:6px; z-index:5;}
   .sheet-body{padding:16px 18px 100px;}
   .sheet .brand{font-size:.7rem; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); font-weight:700;}
   .sheet h2{font-size:1.3rem; margin:6px 0 10px;}
@@ -303,7 +315,13 @@
 <div class="overlay" id="overlay">
   <div class="sheet" id="sheet" role="dialog" aria-modal="true">
     <button class="sheet-close" id="sheetClose" aria-label="Cerrar">✕</button>
-    <img class="main" id="sheetImg" alt="">
+<div class="gallery" id="gallery">
+  <div class="gallery-track" id="galleryTrack"></div>
+  <button class="gallery-arrow prev" id="galPrev" aria-label="Anterior">‹</button>
+  <button class="gallery-arrow next" id="galNext" aria-label="Siguiente">›</button>
+  <div class="gallery-count" id="galCount"></div>
+  <div class="gallery-dots" id="galDots"></div>
+</div>
     <div class="sheet-body">
       <div class="brand" id="sheetBrand"></div>
       <h2 id="sheetName"></h2>
@@ -496,16 +514,72 @@ function renderGrid(){
 /* ---------------- product detail sheet ---------------- */
 const overlay=document.getElementById('overlay');
 const sheet=document.getElementById('sheet');
-const sheetImg=document.getElementById('sheetImg');
+
+const galleryTrack=document.getElementById('galleryTrack');
+const galPrev=document.getElementById('galPrev');
+const galNext=document.getElementById('galNext');
+const galDots=document.getElementById('galDots');
+const galCount=document.getElementById('galCount');
+let galIndex=0, galUrls=[];
+
+function preload(url){
+  return new Promise(resolve=>{
+    const im=new Image();
+    im.onload=()=>resolve(url);
+    im.onerror=()=>resolve(null);
+    im.src=url;
+  });
+}
+async function buildGallery(p){
+  const candidates=[0,1,2,3,4,5].map(i=>IMG_BASE+p.slug+'/'+i+'.webp');
+  const results=await Promise.all(candidates.map(preload));
+  const ok=results.filter(Boolean);
+  return ok.length ? ok : [p.img];
+}
+function renderGalleryUI(){
+  galleryTrack.style.transform=`translateX(-${galIndex*100}%)`;
+  [...galDots.children].forEach((d,i)=>d.classList.toggle('on', i===galIndex));
+  galCount.textContent=`${galIndex+1}/${galUrls.length}`;
+  galPrev.disabled = galUrls.length<2;
+  galNext.disabled = galUrls.length<2;
+}
+function goTo(i){
+  if(!galUrls.length) return;
+  galIndex=(i+galUrls.length)%galUrls.length;
+  renderGalleryUI();
+}
+galPrev.onclick=()=>goTo(galIndex-1);
+galNext.onclick=()=>goTo(galIndex+1);
+let touchStartX=null;
+const galleryEl=document.getElementById('gallery');
+galleryEl.addEventListener('touchstart',e=>{ touchStartX=e.touches[0].clientX; },{passive:true});
+galleryEl.addEventListener('touchend',e=>{
+  if(touchStartX===null) return;
+  const dx=e.changedTouches[0].clientX - touchStartX;
+  if(Math.abs(dx)>40){ dx<0 ? goTo(galIndex+1) : goTo(galIndex-1); }
+  touchStartX=null;
+},{passive:true});
+
 const sheetBrand=document.getElementById('sheetBrand');
 const sheetName=document.getElementById('sheetName');
 const sheetOld=document.getElementById('sheetOld');
 const sheetSizes=document.getElementById('sheetSizes');
 const checkoutBtn=document.getElementById('checkoutBtn');
 
-function openSheet(p){
-  sheetImg.src=p.img; sheetImg.alt=p.name;
+async function openSheet(p){
+  galIndex=0;
+  galUrls=[p.img];
+  galleryTrack.innerHTML=`<img src="${p.img}" alt="${p.name}">`;
+  galDots.innerHTML='';
+  renderGalleryUI();
   sheetBrand.textContent=p.brand;
+
+    const urls = await buildGallery(p);
+  galUrls = urls;
+  galleryTrack.innerHTML = urls.map(u=>`<img src="${u}" alt="${p.name}">`).join('');
+  galDots.innerHTML = urls.length>1 ? urls.map(()=>'<span></span>').join('') : '';
+  goTo(0);
+
   sheetName.textContent=p.name;
   sheetOld.textContent=`$${p.oldPrice.toLocaleString('es-MX')} MXN`;
   sheetSizes.innerHTML='';
@@ -530,6 +604,9 @@ function closeSheet(){
 }
 document.getElementById('sheetClose').onclick=closeSheet;
 overlay.addEventListener('click', e=>{ if(e.target===overlay) closeSheet(); });
+
+
+
 
 /* ---------------- countdown ---------------- */
 function fmt(n){ return String(n).padStart(2,'0'); }
@@ -578,23 +655,21 @@ function renderReviews(){
   const row=document.getElementById('reviewsRow');
   row.innerHTML = REVIEWS.map(r=>`
     <div class="review-card">
-      <img class="review-photo" src="${r.img}" alt="Foto de cliente: ${r.name}"
-           onerror="this.style.display='none'">
-      <div class="review-tagrow">
-        <span class="review-tag">${r.tag}</span>
-        <span class="review-stars">★★★★★</span>
-      </div>
-      <p class="review-quote">"${r.quote}"</p>
-      <div class="review-who">
-        <div class="review-avatar-letter">${r.name.charAt(0)}</div>
-        <div>
+      <div class="review-top">
+        <img class="review-avatar" src="${r.img}" alt="${r.name}"
+             onerror="this.outerHTML='<div class=&quot;review-avatar fallback&quot;>${r.name.charAt(0)}</div>'">
+        <div class="review-who">
           <div class="rname">${r.name}</div>
           <div class="rloc">${r.loc}</div>
         </div>
       </div>
+      <div class="review-stars">★★★★★</div>
+      <span class="review-tag">${r.tag}</span>
+      <p class="review-quote">"${r.quote}"</p>
     </div>
   `).join('');
 }
+
 
 
 
