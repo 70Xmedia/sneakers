@@ -118,6 +118,43 @@
   }
   .empty{grid-column:1/-1; text-align:center; color:var(--muted); padding:40px 10px; font-size:.85rem;}
 
+
+/* ---------- Reviews ---------- */
+.reviews{padding:12px 0 8px; border-top:1px solid var(--line);}
+.reviews-head{padding-top:24px;}
+.reviews-head h2{font-size:1.2rem; margin:0 0 4px;}
+.reviews-head p{color:var(--muted); font-size:.82rem; margin:0 0 16px;}
+.reviews-row{
+  display:flex; gap:12px; overflow-x:auto; padding:4px 2px 18px; scroll-snap-type:x proximity;
+  scrollbar-width:none;
+}
+.reviews-row::-webkit-scrollbar{display:none;}
+.review-card{
+  flex:0 0 auto; width:220px; scroll-snap-align:start;
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+  overflow:hidden; display:flex; flex-direction:column;
+}
+.review-photo{width:100%; aspect-ratio:4/3; object-fit:cover; background:var(--surface-2); display:block;}
+.review-tagrow{display:flex; align-items:center; justify-content:space-between; padding:10px 14px 0;}
+.review-tag{
+  font-size:.62rem; color:var(--accent); background:rgba(244,208,0,.1);
+  display:inline-block; padding:2px 8px; border-radius:6px; font-weight:700;
+}
+.review-stars{color:var(--accent); font-size:.72rem; letter-spacing:1px;}
+.review-quote{font-size:.8rem; line-height:1.45; color:var(--text); margin:8px 0 0; padding:0 14px;}
+.review-who{display:flex; align-items:center; gap:8px; padding:12px 14px 14px;}
+.review-avatar-letter{
+  width:30px; height:30px; border-radius:50%; background:var(--surface-2); border:1px solid var(--line);
+  display:flex; align-items:center; justify-content:center; font-weight:800; color:var(--accent);
+  font-size:.8rem; flex:0 0 auto;
+}
+.review-who .rname{font-size:.8rem; font-weight:700; color:var(--text);}
+.review-who .rloc{font-size:.66rem; color:var(--muted);}
+
+
+
+
+
   /* ---------- Why us ---------- */
   .why{padding:10px 0 40px; border-top:1px solid var(--line);}
   .why h2{font-size:1.2rem; margin:22px 0 14px;}
@@ -229,6 +266,15 @@
   </section>
 
   <section class="grid" id="grid"></section>
+
+  <section class="reviews">
+  <div class="reviews-head">
+    <h2>Lo que dicen de nosotros</h2>
+    <p>Cada foto y comentario es auténtico.</p>
+  </div>
+  <div class="reviews-row" id="reviewsRow"></div>
+</section>
+
 
   <section class="why">
     <h2>¿Por qué comprar aquí?</h2>
@@ -510,9 +556,53 @@ function tick(){
 tick();
 setInterval(tick,1000);
 
+
+/* ---------------- reviews ---------------- */
+const REVIEW_IMG_BASE = "https://sqijqrzmpvfqpyqtdeic.supabase.co/storage/v1/object/public/referencias/";
+const REVIEWS = [
+["Mario M.","Macroplaza Oaxaca","Entrega personal","Me los entregaron muy rápido, ¡muchas gracias!","1783962960385-9e5ab00c.webp"],
+["Arturo N.","Miahuatlán Oax","Pedido recibido","Ya los tengo en mis manos, ¡recomendadísimos!","1783963132815-a976d297.webp"],
+["Jorge G.","Tehuantepec Oax.","Pedido recibido","Me gustaron mucho, excelente servicio.","1783963147045-7c1d5d82.webp"],
+["Pedro R.","Zócalo de Oaxaca","Entrega personal","Me los entregaron 1 hora después de hacer mi pedido, ¡gracias!","1783963177866-af9048c0.webp"],
+["Ana G.","Centro Oaxaca","Entrega personal","Me los entregaron rápido y me hicieron descuento.","1783963194481-01468606.webp"],
+["Laura N.","Parque El Llano Oax","Entrega personal","Me los entregaron el mismo día y la atención fue muy buena.","1783963209423-15b346dc.webp"],
+["Ricardo C.","Ejutla Oax.","Pedido recibido","Se ven pasados de lanza.","1783963237353-b347cdd5.webp"],
+["Carlos M.","Tehuantepec Oax","Pedido recibido","Excelente calidad, súper chidos y cómodos.","1782836285329-b6aa2b77.png"],
+["Raul G.","Puerto Escondido Oax","Pedido recibido","Me llegaron chido, gracias.","1783963260634-28956d2b.webp"],
+["Alonso N.","Miahuatlán Oax.","Pedido recibido","Muchas gracias amigo, están en perfectas condiciones. Me encantaron, 10/10.","1783963273026-43330036.webp"],
+["Daniel M.","Coppel Periférico Oax","Pedido recibido","La entrega fue rápida y me gustó la calidad.","1783963292010-067d3611.webp"],
+["Lalo P.","Plaza Bella Oax","Pedido recibido","Es nuestra segunda compra y nos dieron descuento.","1783963314153-7f02fdf5.webp"]
+].map(r=>({name:r[0],loc:r[1],tag:r[2],quote:r[3],img:REVIEW_IMG_BASE+r[4]}));
+
+function renderReviews(){
+  const row=document.getElementById('reviewsRow');
+  row.innerHTML = REVIEWS.map(r=>`
+    <div class="review-card">
+      <img class="review-photo" src="${r.img}" alt="Foto de cliente: ${r.name}"
+           onerror="this.style.display='none'">
+      <div class="review-tagrow">
+        <span class="review-tag">${r.tag}</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+      <p class="review-quote">"${r.quote}"</p>
+      <div class="review-who">
+        <div class="review-avatar-letter">${r.name.charAt(0)}</div>
+        <div>
+          <div class="rname">${r.name}</div>
+          <div class="rloc">${r.loc}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+
+
 /* ---------------- init ---------------- */
 renderFilters();
 renderGrid();
+renderReviews();
+
 </script>
 </body>
 </html>
