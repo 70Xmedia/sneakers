@@ -37,21 +37,56 @@
   button{font-family:inherit; cursor:pointer;}
   .wrap{max-width:1180px; margin:0 auto; padding:0 14px;}
 
-  /* ---------- Top bar ---------- */
-  header.top{
-    position:sticky; top:0; z-index:40;
-    background:rgba(14,14,16,.92); backdrop-filter:blur(8px);
-    border-bottom:1px solid var(--line);
-  }
-  .top-inner{
-    display:flex; align-items:center; justify-content:space-between;
-    padding:12px 14px; max-width:1180px; margin:0 auto;
-  }
-  .logo{font-family:'Archivo Black'; font-size:1rem; letter-spacing:.02em;}
-  .logo small{display:block; font-family:Inter; font-weight:600; color:var(--muted); font-size:.62rem; letter-spacing:.14em; margin-top:2px;}
-  .socials{display:flex; gap:14px;}
-  .socials a{color:var(--muted); font-size:.78rem; text-decoration:none; border-bottom:1px solid transparent;}
-  .socials a:hover{color:var(--text); border-color:var(--text);}
+/* ---------- Top bar ---------- */
+header.top{
+  position:relative;
+  z-index:40;
+  background:rgba(14,14,16,.92);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+
+.top-inner{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:12px 14px;
+  max-width:1180px;
+  margin:0 auto;
+}
+
+.logo{
+  font-family:'Archivo Black';
+  font-size:1rem;
+  letter-spacing:.02em;
+}
+
+.logo small{
+  display:block;
+  font-family:Inter;
+  font-weight:600;
+  color:var(--muted);
+  font-size:.62rem;
+  letter-spacing:.14em;
+  margin-top:2px;
+}
+
+.socials{
+  display:flex;
+  gap:14px;
+}
+
+.socials a{
+  color:var(--muted);
+  font-size:.78rem;
+  text-decoration:none;
+  border-bottom:1px solid transparent;
+}
+
+.socials a:hover{
+  color:var(--text);
+  border-color:var(--text);
+}
 
   /* ---------- Sale banner ---------- */
   .salebar{
@@ -618,7 +653,7 @@ function tick(){
   const sheetClockEl=document.getElementById('sheetClock');
   if(diff<=0){
     barEl.classList.add('ended');
-    barEl.innerHTML='<span>La venta relámpago ha terminado</span>';
+    barEl.innerHTML='<span>⚡ Promoción muy limitada. Lo que se agota, se agota.</span>';
     if(sheetClockEl) sheetClockEl.textContent='Oferta finalizada';
     return;
   }
